@@ -25,6 +25,7 @@
  */
 
 #include <avr/pgmspace.h>
+#include <Arduino.h>
 #include "epdpaint.h"
 
 Paint::Paint(unsigned char* image, int width, int height) {
@@ -163,6 +164,35 @@ void Paint::DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored) 
 }
 
 /**
+ *  @brief: this draws a charactor on the frame buffer but not refresh (big font)
+ */
+void Paint::DrawBigCharAt(int x, int y, uint8_t char_id, const bigfont* font, int colored) {
+  int bit_width = font[char_id].width;
+  int over = bit_width % 8;
+  if (over) {
+    bit_width += 8 - over;
+  }
+  int byte_width = (bit_width + 1) / 8;
+  const uint8_t* table = font[char_id].table;
+  uint8_t buf;
+  
+  for (size_t h = 0; h < FONT60_HEIGHT; h++) {
+    for (size_t w = 0; w < bit_width; w++) {
+      int w_bit = w % 8;
+      if (w_bit == 0) {
+        int w_byte = w / 8;
+        buf = pgm_read_byte(&table[h * byte_width + w_byte]);
+      }
+      if ((buf & (1<<(7-w_bit))) != 0) {
+        int x_draw = x + w;
+        int y_draw = y + h;
+        DrawPixel(x_draw, y_draw, colored);
+      }
+    }
+  }
+}
+
+/**
 *  @brief: this displays a string on the frame buffer but not refresh
 */
 void Paint::DrawStringAt(int x, int y, const char* text, sFONT* font, int colored) {
@@ -179,6 +209,61 @@ void Paint::DrawStringAt(int x, int y, const char* text, sFONT* font, int colore
         /* Point on the next character */
         p_text++;
         counter++;
+    }
+}
+
+/**
+*  @brief: this displays a string on the frame buffer but not refresh (with big font)
+*/
+void Paint::DrawBigStringAt(int x, int y, const char* text, const bigfont* font, int colored, Epd epd) {
+    const char* p_text = text;
+    size_t refcolumn = x;
+
+    SetWidth(FONT60_MAX_WIDTH);
+    SetHeight(FONT60_HEIGHT);
+    
+    /* Send the string character by character on EPD */
+    while (*p_text != 0) {
+      Clear(!colored);      
+      /* Display one character on EPD */
+      
+      uint8_t char_id = (*p_text);
+
+      if ('a' <= char_id && char_id <= 'z') { // normal char
+        char_id -= 'a';
+      }
+      else if (char_id == 32) {  // space
+        char_id = 'z' - 'a' + 1;
+      }
+      else if (char_id == 195) { // ä, ö, ü
+        char offset;
+        char_id = *(++p_text);
+        if (char_id == 164) {
+          offset = 2;
+        }
+        else if (char_id == 182) {
+          offset = 3;
+        }
+        else if (char_id == 188) {
+          offset = 4;
+        }
+        else {
+          p_text++;
+          continue;
+        }
+        char_id = 'z' - 'a' + offset;
+      } else {
+        p_text++;
+        continue;
+      }
+      
+      DrawBigCharAt(0, 0, char_id, font, colored);
+
+      epd.SetPartialWindow(GetImage(), refcolumn, y, GetWidth(), GetHeight());
+
+      refcolumn += font[char_id].width;
+      /* Point on the next character */
+      p_text++;      
     }
 }
 
@@ -317,26 +402,3 @@ void Paint::DrawFilledCircle(int x, int y, int radius, int colored) {
 }
 
 /* END OF FILE */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

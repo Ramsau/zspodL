@@ -5,6 +5,8 @@
 #include "epd4in2.h"
 #include "epdpaint.h"
 
+#include "buttons.h"
+
 #include "trans.h"
 
 #define COLORED     0
@@ -28,23 +30,20 @@ void setup() {
   char timeStamp[] = "DD/MM/YYYY hh:mm:ss";
   Serial.println(now.toString(timeStamp));
 
-  // ISRs
-  pinMode(6, INPUT);
-  attachInterrupt(digitalPinToInterrupt(6), test, RISING);
+  init_buttons();
 
+  updateDisplay();
 }
 
 
 void loop() {
-  if (digitalRead(6) == LOW) {
-    Serial.println("here");
-  }
 }
 
 
 void test() {
   Serial.println("ISR");
 }
+
 void  updateDisplay() {
   
   now = rtc.now();
@@ -77,6 +76,9 @@ void  updateDisplay() {
   paint.DrawStringAt(fromLeft - 200, 3, date, &Font24, UNCOLORED);
   epd.SetPartialWindow(paint.GetImage(), 200, 0, paint.GetWidth(), paint.GetHeight());
 
+  
+  paint.DrawBigStringAt(0, 50, "god loves", font60, COLORED, epd);
+  paint.DrawBigStringAt(0, 110, "you", font60, COLORED, epd);
 
   epd.DisplayFrame();
   epd.Sleep();

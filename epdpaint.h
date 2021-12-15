@@ -37,6 +37,8 @@
 #define IF_INVERT_COLOR     1
 
 #include "fonts.h"
+#include "bigfont.h"
+#include "epd4in2.h"
 
 class Paint {
 public:
@@ -53,7 +55,9 @@ public:
     void DrawAbsolutePixel(int x, int y, int colored);
     void DrawPixel(int x, int y, int colored);
     void DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored);
+    void DrawBigCharAt(int x, int y, uint8_t ascii_char, const bigfont* font, int colored);
     void DrawStringAt(int x, int y, const char* text, sFONT* font, int colored);
+    void DrawBigStringAt(int x, int y, const char* text, const bigfont* font, int colored, Epd epd);
     void DrawLine(int x0, int y0, int x1, int y1, int colored);
     void DrawHorizontalLine(int x, int y, int width, int colored);
     void DrawVerticalLine(int x, int y, int height, int colored);
@@ -72,4 +76,3 @@ private:
 #endif
 
 /* END OF FILE */
-

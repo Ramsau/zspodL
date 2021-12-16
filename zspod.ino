@@ -6,8 +6,8 @@
 #include "epdpaint.h"
 
 #include "buttons.h"
-
 #include "trans.h"
+#include "timing.h"
 
 #define COLORED     0
 #define UNCOLORED   1
@@ -24,15 +24,26 @@ void setup() {
   // RTC and serial
   Serial.begin(9600);
   rtc.begin();
+  rtc.adjust(DateTime(__DATE__, __TIME__));
 
   now = rtc.now();
   Serial.print(" Start time: ");
   char timeStamp[] = "DD/MM/YYYY hh:mm:ss";
   Serial.println(now.toString(timeStamp));
 
+  // buttons
   init_buttons();
 
-  updateDisplay();
+  // display
+  //updateDisplay();
+
+  // disable ADC
+  ADCSRA &= ~(1<<ADEN);
+
+  Timer::timed_func = on_wakeup;
+  Timer::init_timer();
+  Timer::seconds_till_wake=2;
+  Timer::start_timer();
 }
 
 
@@ -40,8 +51,11 @@ void loop() {
 }
 
 
-void test() {
-  Serial.println("ISR");
+void on_wakeup() {
+  Timer::seconds_till_wake = 10;
+  updateDisplay();
+  Serial.println("aaa");
+  Timer::start_timer();
 }
 
 void  updateDisplay() {

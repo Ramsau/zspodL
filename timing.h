@@ -5,11 +5,11 @@
 
 namespace Timer
 {
-  extern void timer_wake_interrupt();
+  extern volatile signed int iters_till_wake;
+  
   extern void init_timer();
-  extern signed int seconds_till_wake;
-  extern void (*timed_func)();
-  extern void start_timer();
+  extern void do_sleep();
+  extern void start_timer(int seconds_till_wake);
   extern void stop_timer();
 }
 

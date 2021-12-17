@@ -1,5 +1,7 @@
 #include <Wire.h>
 #include <RTClib.h>
+#include <avr/sleep.h>
+#include <avr/power.h>
 
 #include <SPI.h>
 #include "epd4in2.h"
@@ -24,7 +26,6 @@ void setup() {
   // RTC and serial
   Serial.begin(9600);
   rtc.begin();
-  rtc.adjust(DateTime(__DATE__, __TIME__));
 
   now = rtc.now();
   Serial.print(" Start time: ");
@@ -35,27 +36,22 @@ void setup() {
   init_buttons();
 
   // display
-  //updateDisplay();
+  updateDisplay();
 
-  // disable ADC
-  ADCSRA &= ~(1<<ADEN);
 
-  Timer::timed_func = on_wakeup;
+  // Timing
   Timer::init_timer();
-  Timer::seconds_till_wake=2;
-  Timer::start_timer();
+  Timer::start_timer(5); 
+  delay(100); 
 }
 
 
 void loop() {
-}
-
-
-void on_wakeup() {
-  Timer::seconds_till_wake = 10;
+  Timer::do_sleep();
+  delay(500);
   updateDisplay();
-  Serial.println("aaa");
-  Timer::start_timer();
+  delay(500);
+  Timer::start_timer(5);
 }
 
 void  updateDisplay() {
@@ -79,6 +75,8 @@ void  updateDisplay() {
   epd.ClearFrameHidden();
   Serial.println(timecode);
 
+  paint.SetHeight(30);
+  paint.SetWidth(200);
   paint.Clear(UNCOLORED);
   paint.DrawFilledRectangle(0,0, 200, 50, COLORED);
   paint.DrawStringAt(fromLeft, 3, date, &Font24, UNCOLORED);

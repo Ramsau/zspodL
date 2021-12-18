@@ -42,9 +42,9 @@ void buttonInterrupt() {
     button_pressed = BTN_CODE_MIN_UP;
   } else if (digitalRead(BTN_PIN_MIN_DN) == HIGH) {
     button_pressed = BTN_CODE_MIN_DN;
-  } else if (digitalRead(BTN_PIN_DAY_UP) == HIGH) {
+  } else if (analogRead(BTN_PIN_DAY_UP) > 512) {  // ran out of digital pins
     button_pressed = BTN_CODE_DAY_UP;
-  } else if (digitalRead(BTN_PIN_DAY_DN) == HIGH) {
+  } else if (analogRead(BTN_PIN_DAY_DN) > 512) {
     button_pressed = BTN_CODE_DAY_DN;
   } else if (digitalRead(BTN_PIN_MON_UP) == HIGH) {
     button_pressed = BTN_CODE_MON_UP;
@@ -75,7 +75,6 @@ void init_buttons() {
 
 void check_handle_button_press() {
   if (!button_pressed) return;
-  Serial.println("oida");
   DateTime time = rtc.now();
   switch (button_pressed) {
     case BTN_CODE_HR_UP:

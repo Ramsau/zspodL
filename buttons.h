@@ -1,11 +1,8 @@
 #ifndef BUTTONS_H
 #define BUTTONS_H
 
-#define BTN_HOUR10_UP 2
-#define BTN_HOUR10_DOWN 3
-#define BTN_HOUR1_UP 4
-#define BTN_HOUR1_DOWN 5
-
-void init_buttons();
+extern volatile int button_pressed;
+extern void init_buttons();
+extern void check_handle_button_press();
 
 #endif

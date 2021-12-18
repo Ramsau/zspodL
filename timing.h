@@ -2,6 +2,7 @@
 #define TIMING_H
 
 #include <RTClib.h>
+#include "buttons.h"
 
 namespace Timer
 {

@@ -11,10 +11,10 @@ struct bigfont {
 
 #define FONT60_HEIGHT 55
 #define FONT60_MAX_WIDTH 55
+
 extern const bigfont font60[];
 extern const uint8_t _char_97[] PROGMEM;
 extern const uint8_t _char_100[] PROGMEM;
 extern const uint8_t _char_99[] PROGMEM;
-
 
 #endif

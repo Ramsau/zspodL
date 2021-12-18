@@ -46,6 +46,12 @@ namespace Timer
 
     while (iters_till_wake-- > 0) {
       sleep_mode();
+
+      // handle button press async
+      if (button_pressed) {
+        check_handle_button_press();
+        return;
+      }
     }
   
     sleep_disable();

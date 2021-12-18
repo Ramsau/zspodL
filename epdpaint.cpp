@@ -219,6 +219,10 @@ void Paint::DrawBigStringAt(int x, int y, const char* text, const bigfont* font,
     const char* p_text = text;
     size_t refcolumn = x;
 
+    uint8_t prev_char_id = 0;
+    uint8_t prev_width = 0;
+    bool prev_draw = false;
+
     SetWidth(FONT60_MAX_WIDTH);
     SetHeight(FONT60_HEIGHT);
     
@@ -228,12 +232,14 @@ void Paint::DrawBigStringAt(int x, int y, const char* text, const bigfont* font,
       /* Display one character on EPD */
       
       uint8_t char_id = (*p_text);
+      bool draw_char = true;
 
       if ('a' <= char_id && char_id <= 'z') { // normal char
         char_id -= 'a';
       }
       else if (char_id == 32) {  // space
         char_id = 'z' - 'a' + 1;
+        draw_char = false;
       }
       else if (char_id == 195) { // ä, ö, ü
         char offset;
@@ -252,20 +258,79 @@ void Paint::DrawBigStringAt(int x, int y, const char* text, const bigfont* font,
           continue;
         }
         char_id = 'z' - 'a' + offset;
-      } else {
+      } else { // invalid char
         p_text++;
         continue;
       }
-      
-      DrawBigCharAt(0, 0, char_id, font, colored);
 
-      epd.SetPartialWindow(GetImage(), refcolumn, y, GetWidth(), GetHeight());
+      // draw char, skip drawing space
+      if (draw_char) { 
+        // residual [0..7] pixels that are ignored by epd are shifted in by paint
+        DrawBigCharAt(refcolumn % 8, 0, char_id, font, colored);
+
+        if (prev_draw) {
+          DrawBigCharAt(refcolumn % 8 - prev_width, 0,  prev_char_id, font, colored);
+        }
+        
+        epd.SetPartialWindow(GetImage(), refcolumn, y, GetWidth(), GetHeight());
+      }
+
+      prev_draw =  draw_char;
+      prev_char_id = char_id;
+      prev_width = font[char_id].width;
 
       refcolumn += font[char_id].width;
       /* Point on the next character */
       p_text++;      
     }
 }
+
+
+int Paint::BigStringWidth(const char* text, const bigfont* font) {
+  const char* p_text = text;
+  size_t width = 0;
+  
+  // Iterate over the string and accumulate the char's widths
+  while (*p_text != 0) {    
+    uint8_t char_id = (*p_text);
+
+    if ('a' <= char_id && char_id <= 'z') { // normal char
+      char_id -= 'a';
+    }
+    else if (char_id == 32) {  // space
+      char_id = 'z' - 'a' + 1;
+    }
+    else if (char_id == 195) { // ä, ö, ü
+      char offset;
+      char_id = *(++p_text);
+      if (char_id == 164) {
+        offset = 2;
+      }
+      else if (char_id == 182) {
+        offset = 3;
+      }
+      else if (char_id == 188) {
+        offset = 4;
+      }
+      else {
+        p_text++;
+        continue;
+      }
+      char_id = 'z' - 'a' + offset;
+    } else { // invalid char
+      p_text++;
+      continue;
+    }
+
+
+    width += font[char_id].width;
+    /* Point on the next character */
+    p_text++;      
+  }
+
+  return width;
+}
+
 
 /**
 *  @brief: this draws a line on the frame buffer

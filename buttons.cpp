@@ -8,16 +8,16 @@
 
 #define BTN_ISR_PIN 2
 
-#define BTN_PIN_HR_UP A0
-#define BTN_PIN_HR_DN A1
-#define BTN_PIN_MIN_UP A2
-#define BTN_PIN_MIN_DN A3
+#define BTN_PIN_HR_UP 4
+#define BTN_PIN_HR_DN 12
+#define BTN_PIN_MIN_UP 6
+#define BTN_PIN_MIN_DN 5
 #define BTN_PIN_DAY_UP A6
 #define BTN_PIN_DAY_DN A7
-#define BTN_PIN_MON_UP 3
-#define BTN_PIN_MON_DN 4
-#define BTN_PIN_YEAR_UP 5
-#define BTN_PIN_YEAR_DN 6
+#define BTN_PIN_MON_UP A2
+#define BTN_PIN_MON_DN A3
+#define BTN_PIN_YEAR_UP A0
+#define BTN_PIN_YEAR_DN A1
 
 #define BTN_CODE_HR_UP 1
 #define BTN_CODE_HR_DN 2
@@ -111,9 +111,11 @@ void check_handle_button_press() {
   button_pressed = 0;
 
   // adjust time, wait for one second to display new time
+  #ifdef SERIAL_ACTIVATE
   Serial.print("New Time: ");
   char format[] = DATE_TIME_FORMAT;
   Serial.println(time.toString(format));
+  #endif
   rtc.adjust(time);
   rtc.begin();
   time_change_mode=true;

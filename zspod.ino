@@ -23,6 +23,8 @@
  
 #define SMALLSTRING_X (400 - 17 * 5) / 2
 #define SMALLSTRING_Y (300 - TOPBAR_HEIGHT - 24) / 2 + TOPBAR_HEIGHT
+ 
+#define SERIAL_DEACTIVATE
 
 
 unsigned char image[750];
@@ -33,20 +35,29 @@ char text_1[20] = {0};
 char text_2[20] = {0};
 
 void setup() {
+  // slow down the clock for power saving
+  CLKPR = (1<<CLKPCE) | (1<<CLKPS1);
+
   // RTC and serial
+  #ifdef SERIAL_ACTIVATE
   Serial.begin(9600);
+  #endif
   rtc.begin();
+  //rtc.adjust(DateTime(__DATE__, __TIME__));
 
   DateTime now = rtc.now();
+  #ifdef SERIAL_ACTIVATE
   Serial.print("Start time: ");
   char dt_format[] = DATE_TIME_FORMAT;
   Serial.println(now.toString(dt_format));
+  #endif
 
   // buttons
   init_buttons();
 
   // display
   updateDisplay();
+
   
   // Timing
   Timer::init_timer();
@@ -63,9 +74,10 @@ void loop() {
 }
 
 void  updateDisplay() {
+
   
   DateTime now = rtc.now();
-  //now = DateTime(2021, 12, 12, 11, 29, 0);
+  //now = DateTime(2021, 12, 12, 11, 58, 0);
 
   char dateTemplate[] = ", DD.MM.YYYY";
   char date[30];
@@ -77,9 +89,11 @@ void  updateDisplay() {
   char t_format[] = TIME_FORMAT;
   strcpy(timecode, now.toString(t_format));
 
+  #ifdef SERIAL_ACTIVATE
   char dt_format[] = DATE_TIME_FORMAT;
   Serial.print("Refresh Time: ");
   Serial.println(now.toString(dt_format));
+  #endif
 
   // (400 - strlen(date)* fontwidth) / 2
   int fromLeft = 200 - (strlen(date) * 17) / 2;
@@ -125,15 +139,20 @@ void  updateDisplay() {
 
   // wait for flush
   delay(50);
+
+  // clear reset pin to reserve power
+  digitalWrite(8, LOW);
+  pinMode(8, INPUT);
 }
 
 int secsToSleep() {
   DateTime now = rtc.now();
+  //now = DateTime(2021, 12, 12, 11, 58, 0);
   
   uint8_t mins = now.minute();
   int next_wakeup_mins = Trans::roundTo(mins, 5) + 3;
 
   int secs_til_wake = (next_wakeup_mins - mins) * 60 - now.second() + 3;
-
+  
   return secs_til_wake;
 }

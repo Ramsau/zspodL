@@ -106,6 +106,9 @@ namespace Trans {
         *(buf++) = ' ';
         strcpy(buf, before);
         break;
+      case 60: // [hour+1]
+        buf[0] = 0;
+        break;
     }
   }
 

@@ -43,7 +43,9 @@ void setup() {
   Serial.begin(9600);
   #endif
   rtc.begin();
-  //  rtc.adjust(DateTime(__DATE__, __TIME__));
+  if (!rtc.isrunning()) {
+    rtc.adjust(DateTime(__DATE__, __TIME__));
+  }
 
   DateTime now = rtc.now();
   #ifdef SERIAL_ACTIVATE

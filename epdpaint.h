@@ -38,7 +38,7 @@
 
 #include "fonts.h"
 #include "bigfont.h"
-#include "epd4in2.h"
+#include "epd7in5_V2.h"
 
 class Paint {
 public:

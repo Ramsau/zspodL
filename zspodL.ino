@@ -4,7 +4,7 @@
 #include <avr/power.h>
 
 #include <SPI.h>
-#include "epd4in2.h"
+#include "epd7in5_V2.h"
 #include "epdpaint.h"
 
 #include "buttons.h"
@@ -12,17 +12,17 @@
 #include "timing.h"
 #include "globals.h"
 
-#define COLORED     0
-#define UNCOLORED   1
+#define COLORED     1
+#define UNCOLORED   0
 
 #define TOPBAR_HEIGHT 30
 #define BIGSTRING_MARGIN 5
-#define BIGSTRING_SINGLE_Y ((300 - TOPBAR_HEIGHT - FONT60_HEIGHT) / 2  + TOPBAR_HEIGHT)
-#define BIGSTRING_DOUBLE_Y_UPPER ((300 - TOPBAR_HEIGHT - (FONT60_HEIGHT * 2) - BIGSTRING_MARGIN ) / 2 + TOPBAR_HEIGHT)
+#define BIGSTRING_SINGLE_Y ((EPD_HEIGHT - TOPBAR_HEIGHT - FONT60_HEIGHT) / 2  + TOPBAR_HEIGHT)
+#define BIGSTRING_DOUBLE_Y_UPPER ((EPD_HEIGHT - TOPBAR_HEIGHT - (FONT60_HEIGHT * 2) - BIGSTRING_MARGIN ) / 2 + TOPBAR_HEIGHT)
 #define BIGSTRING_DOUBLE_Y_LOWER (BIGSTRING_DOUBLE_Y_UPPER + FONT60_HEIGHT + BIGSTRING_MARGIN)
  
-#define SMALLSTRING_X (400 - 17 * 5) / 2
-#define SMALLSTRING_Y (300 - TOPBAR_HEIGHT - 24) / 2 + TOPBAR_HEIGHT
+#define SMALLSTRING_X (EPD_HEIGHT - 17 * 5) / 2
+#define SMALLSTRING_Y (EPD_WIDTH - TOPBAR_HEIGHT - 24) / 2 + TOPBAR_HEIGHT
  
 #define SERIAL_DEACTIVATE
 
@@ -43,7 +43,7 @@ void setup() {
   Serial.begin(9600);
   #endif
   rtc.begin();
-  //rtc.adjust(DateTime(__DATE__, __TIME__));
+  //  rtc.adjust(DateTime(__DATE__, __TIME__));
 
   DateTime now = rtc.now();
   #ifdef SERIAL_ACTIVATE
@@ -96,7 +96,7 @@ void  updateDisplay() {
   #endif
 
   // (400 - strlen(date)* fontwidth) / 2
-  int fromLeft = 200 - (strlen(date) * 17) / 2;
+  int fromLeft = (EPD_WIDTH - strlen(date) * 17) / 2;
 
   epd.Init();
   epd.ClearFrameHidden();
@@ -106,7 +106,6 @@ void  updateDisplay() {
   paint.Clear(UNCOLORED);
   paint.DrawFilledRectangle(0,0, 200, TOPBAR_HEIGHT, COLORED);
   paint.DrawStringAt(fromLeft, 5, date, &Font24, UNCOLORED);
-  paint.DrawStringAt(100, 100, timecode, &Font24, COLORED);
   epd.SetPartialWindow(paint.GetImage(), 0, 0, paint.GetWidth(), paint.GetHeight());
   
   paint.Clear(UNCOLORED);
@@ -122,8 +121,8 @@ void  updateDisplay() {
     int width_upper = paint.BigStringWidth(text_1, font60);
     int width_lower = paint.BigStringWidth(text_2, font60);
   
-    int from_left_upper = 200 - width_upper / 2;
-    int from_left_lower = 200 - width_lower / 2;
+    int from_left_upper = (EPD_WIDTH - width_upper) / 2;
+    int from_left_lower = (EPD_WIDTH - width_lower) / 2;
     
     paint.DrawBigStringAt(from_left_upper, BIGSTRING_DOUBLE_Y_UPPER, text_1, font60, COLORED, epd);
     paint.DrawBigStringAt(from_left_lower, width_upper ? BIGSTRING_DOUBLE_Y_LOWER : BIGSTRING_SINGLE_Y, text_2, font60, COLORED, epd);

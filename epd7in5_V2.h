@@ -1,6 +1,6 @@
 /**
- *  @filename   :   epd4in2.h
- *  @brief      :   Header file for Dual-color e-paper library epd4in2.cpp
+ *  @filename   :   epd7in5.h
+ *  @brief      :   Header file for e-paper library epd7in5.cpp
  *  @author     :   Yehui from Waveshare
  *  
  *  Copyright (C) Waveshare     August 10 2017
@@ -24,14 +24,14 @@
  * THE SOFTWARE.
  */
 
-#ifndef EPD4IN2_H
-#define EPD4IN2_H
+#ifndef EPD7IN5_V2_H
+#define EPD7IN5_V2_H
 
 #include "epdif.h"
 
 // Display resolution
-#define EPD_WIDTH       400
-#define EPD_HEIGHT      300
+#define EPD_WIDTH       800
+#define EPD_HEIGHT      480
 
 // EPD4IN2 commands
 #define PANEL_SETTING                               0x00
@@ -73,52 +73,38 @@
 #define READ_OTP                                    0xA2
 #define POWER_SAVING                                0xE3
 
-extern const unsigned char lut_vcom0[];
-extern const unsigned char lut_ww[];
-extern const unsigned char lut_bw[];
-extern const unsigned char lut_bb[];
-extern const unsigned char lut_wb[];
-
-extern const unsigned char EPD_4IN2_4Gray_lut_vcom[];
-extern const unsigned char EPD_4IN2_4Gray_lut_ww[];
-extern const unsigned char EPD_4IN2_4Gray_lut_bw[];
-extern const unsigned char EPD_4IN2_4Gray_lut_wb[];
-extern const unsigned char EPD_4IN2_4Gray_lut_bb[];
 
 class Epd : EpdIf {
 public:
-    unsigned int width;
-    unsigned int height;
-
     Epd();
     ~Epd();
     int  Init(void);
-	int  Init_4Gray(void);
-    void SendCommand(unsigned char command);
-    void SendData(unsigned char data);
     void WaitUntilIdle(void);
     void Reset(void);
-    void SetPartialWindow(const unsigned char* frame_buffer, int x, int y, int w, int l);
-    void SetPartialWindowBlack(const unsigned char* buffer_black, int x, int y, int w, int l);
-    void SetPartialWindowRed(const unsigned char* buffer_red, int x, int y, int w, int l);
-    void Set_4GrayDisplay(const char *Image, int x, int y, int w, int l);
-	void SetLut(void);
-	void set4Gray_lut(void);
+    void SetLut(void);
     void DisplayFrame(const unsigned char* frame_buffer);
+    void SendCommand(unsigned char command);
+    void SendData(unsigned char data);
+    void Sleep(void);
+    void Clear(void);
+    void Displaypart(const unsigned char* pbuffer, unsigned long Start_X, unsigned long Start_Y,unsigned long END_X,unsigned long END_Y);
+    void SetPartialWindow(const unsigned char* frame_buffer, int x, int y, int w, int h);
     void DisplayFrame(void);
     void ClearFrameHidden(void);
     void ClearFrame(void);
-    void Sleep(void);
-	
-	
-
+ 
 private:
     unsigned int reset_pin;
     unsigned int dc_pin;
     unsigned int cs_pin;
     unsigned int busy_pin;
+    unsigned long width;
+    unsigned long height;
+
+	void SetLut(unsigned char *lut);
+    void SetLut_by_host(unsigned char *lut_vcom, unsigned char *lut_ww, unsigned char *lut_bw, unsigned char *lut_wb, unsigned char *lut_bb);
 };
 
-#endif /* EPD4IN2_H */
+#endif /* EPD7IN5_H */
 
 /* END OF FILE */

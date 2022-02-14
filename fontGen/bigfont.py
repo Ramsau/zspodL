@@ -186,6 +186,9 @@ class Glyph(object):
 
 
 class Font(object):
+    max_height = 0
+    max_descent = 0
+
     def __init__(self, filename, size):
         self.face = freetype.Face(filename)
         self.face.set_pixel_sizes(0, size)
@@ -240,7 +243,11 @@ class Font(object):
             previous_char = char
 
         height = max_ascent + max_descent
-        return (width, 56, 12)
+
+        self.max_descent = max(self.max_descent, max_descent)
+        self.max_height = max(self.max_height, height)
+
+        return (width, height, max_descent)
 
     def render_text(self, text, width=None, height=None, baseline=None):
         """
@@ -250,7 +257,7 @@ class Font(object):
         the `text_dimensions' method.
         """
         if None in (width, height, baseline):
-            width, height, baseline = self.text_dimensions(text)
+            width, _, _ = self.text_dimensions(text)
 
 
         x = 0
@@ -278,14 +285,17 @@ class Font(object):
 
 if __name__ == '__main__':
     # Be sure to place 'helvetica.ttf' (or any other ttf / otf font file) in the working directory.
-    fnt = Font('C059-BdIta.ttf', 60)
+    fnt_size = 110
+    max_height = 103
+    max_descent = 22
+    fnt = Font('C059-BdIta.ttf', fnt_size)
 
     print('#include "bigfont.h"\n#include <avr/pgmspace.h>\n\n')
 
     arr = 'const bigfont font60[] = {'
     for i in list(range(97, 123)) + [ord(' '), ord('ä'), ord('ö'), ord('ü')]:
         # repr(fnt.render_text(char))
-        repr, array_entry = fnt.render_text(chr(i), height=60).arrayize()
+        repr, array_entry = fnt.render_text(chr(i), height=max_height, baseline=max_descent).arrayize()
         print(repr)
         arr += array_entry
 

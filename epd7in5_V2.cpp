@@ -203,12 +203,10 @@ void Epd::SendData(unsigned char data) {
  */
 void Epd::WaitUntilIdle(void) {
     unsigned char busy;
-    Serial.print("e-Paper Busy\r\n ");
     do{
         SendCommand(0x71);
         busy = DigitalRead(busy_pin);
     }while(busy == 0);
-    Serial.print("e-Paper Busy Release\r\n ");
     DelayMs(20);
 }
 

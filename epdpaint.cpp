@@ -166,28 +166,21 @@ void Paint::DrawCharAt(int x, int y, char ascii_char, sFONT* font, int colored) 
 /**
  *  @brief: this draws a charactor on the frame buffer but not refresh (big font)
  */
-void Paint::DrawBigCharAt(int x, int y, uint8_t char_id, const bigfont* font, int colored) {
-  int bit_width = font[char_id].width;
+void Paint::DrawBigCharAt(int x, int y, uint8_t char_id, const BigFont* font, int colored) {
+  int bit_width = pgm_read_byte(font->letters[char_id]);
   int over = bit_width % 8;
   if (over) {
     bit_width += 8 - over;
   }
   int byte_width = (bit_width + 1) / 8;
-  const uint8_t* table = font[char_id].table;
+  const uint8_t* table = font->letters[char_id];
   uint8_t buf;
   
   for (size_t h = 0; h < FONT60_HEIGHT; h++) {
     for (size_t w = 0; w < bit_width; w++) {
-      int w_bit = w % 8;
-      if (w_bit == 0) {
-        int w_byte = w / 8;
-        buf = pgm_read_byte(&table[h * byte_width + w_byte]);
-      }
-      if ((buf & (1<<(7-w_bit))) != 0) {
-        int x_draw = x + w;
-        int y_draw = y + h;
-        DrawPixel(x_draw, y_draw, colored);
-      }
+      int x_draw = x + w;
+      int y_draw = y + h;
+      DrawPixel(x_draw, y_draw, colored);
     }
   }
 }
@@ -215,7 +208,7 @@ void Paint::DrawStringAt(int x, int y, const char* text, sFONT* font, int colore
 /**
 *  @brief: this displays a string on the frame buffer but not refresh (with big font)
 */
-void Paint::DrawBigStringAt(int x, int y, const char* text, const bigfont* font, int colored, Epd epd) {
+void Paint::DrawBigStringAt(int x, int y, const char* text, const BigFont* font, int colored, Epd epd) {
     const char* p_text = text;
     size_t refcolumn = x;
 
@@ -223,8 +216,8 @@ void Paint::DrawBigStringAt(int x, int y, const char* text, const bigfont* font,
     uint8_t prev_width = 0;
     bool prev_draw = false;
 
-    SetWidth(FONT60_MAX_WIDTH);
-    SetHeight(FONT60_HEIGHT);
+    SetWidth(font->max_width);
+    SetHeight(font->height);
     
     /* Send the string character by character on EPD */
     while (*p_text != 0) {
@@ -277,16 +270,16 @@ void Paint::DrawBigStringAt(int x, int y, const char* text, const bigfont* font,
 
       prev_draw =  draw_char;
       prev_char_id = char_id;
-      prev_width = font[char_id].width;
+      prev_width = pgm_read_byte(font->letters[char_id]);
 
-      refcolumn += font[char_id].width;
+      refcolumn += prev_width;
       /* Point on the next character */
       p_text++;      
     }
 }
 
 
-int Paint::BigStringWidth(const char* text, const bigfont* font) {
+int Paint::BigStringWidth(const char* text, const BigFont* font) {
   const char* p_text = text;
   size_t width = 0;
   
@@ -322,8 +315,7 @@ int Paint::BigStringWidth(const char* text, const bigfont* font) {
       continue;
     }
 
-
-    width += font[char_id].width;
+    width += pgm_read_byte(font->letters[char_id]);
     /* Point on the next character */
     p_text++;      
   }

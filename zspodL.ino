@@ -24,7 +24,7 @@
 #define SMALLSTRING_X (EPD_HEIGHT - 17 * 5) / 2
 #define SMALLSTRING_Y (EPD_WIDTH - TOPBAR_HEIGHT - 24) / 2 + TOPBAR_HEIGHT
  
-#define SERIAL_DEACTIVATE
+#define SERIAL_ACTIVATE
 
 
 unsigned char image[750];
@@ -115,19 +115,18 @@ void  updateDisplay() {
   paint.DrawStringAt(fromLeft - 200, 5, date, &Font24, UNCOLORED);
   epd.SetPartialWindow(paint.GetImage(), 200, 0, paint.GetWidth(), paint.GetHeight());
 
-
   if (!time_change_mode) {
     Trans::upperString(now, text_1);
     Trans::lowerString(now, text_2);
   
-    int width_upper = paint.BigStringWidth(text_1, font60);
-    int width_lower = paint.BigStringWidth(text_2, font60);
+    return;
+    int width_upper = paint.BigStringWidth(text_1, &font110);
+    int width_lower = paint.BigStringWidth(text_2, &font110);
   
     int from_left_upper = (EPD_WIDTH - width_upper) / 2;
     int from_left_lower = (EPD_WIDTH - width_lower) / 2;
-    
-    paint.DrawBigStringAt(from_left_upper, BIGSTRING_DOUBLE_Y_UPPER, text_1, font60, COLORED, epd);
-    paint.DrawBigStringAt(from_left_lower, width_upper ? BIGSTRING_DOUBLE_Y_LOWER : BIGSTRING_SINGLE_Y, text_2, font60, COLORED, epd);
+    paint.DrawBigStringAt(from_left_upper, BIGSTRING_DOUBLE_Y_UPPER, text_1, &font110, COLORED, epd);
+    paint.DrawBigStringAt(from_left_lower, width_upper ? BIGSTRING_DOUBLE_Y_LOWER : BIGSTRING_SINGLE_Y, text_2, &font110, COLORED, epd);
   }
   else {
     paint.Clear(UNCOLORED);

@@ -28,6 +28,7 @@
 #define EPD7IN5_V2_H
 
 #include "epdif.h"
+#include "bigfont.h"
 
 // Display resolution
 #define EPD_WIDTH       800
@@ -89,6 +90,10 @@ public:
     void Clear(void);
     void Displaypart(const unsigned char* pbuffer, unsigned long Start_X, unsigned long Start_Y,unsigned long END_X,unsigned long END_Y);
     void SetPartialWindow(const unsigned char* frame_buffer, int x, int y, int w, int h);
+    int CharToLetterId(const char charToTransform, const BigFont* font);
+    int DisplayChar(const int letterId, const int formerLetterId, const BigFont* font, int colored, int x, int y);
+    void DisplayText(const char* text, const BigFont* font, int colored, int x, int y);
+    int BigStringWidth(const char* text, const BigFont* font);
     void DisplayFrame(void);
     void ClearFrameHidden(void);
     void ClearFrame(void);

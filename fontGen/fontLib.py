@@ -51,22 +51,40 @@ class Bitmap(object):
             char_repr = ' '
 
         rows = "const uint8_t %s_char_%d[] PROGMEM = { // '%c'\n" % (font_prefix, ord(self.char), char_repr)
-        rows += '{0:#04x}, \n'.format(self.width)
+        rows += '    {0:#04x}, // width\n'.format(self.width)
+        blankLines = -1
 
         for y in range(self.height):
-            rows += '    '
+            rows += ''
             current_color = 0
 
-            vals = ''
+            vals = '    '
             for x in range(self.width):
                 new_color = self.pixels[y * self.width + x]
                 if new_color != current_color:
                     # save positions where color is switched
                     vals += '{0:#04x}, '.format(x)
                     current_color = new_color
-            vals += '0xff,'
 
+                    # break off the blank line counter
+                    if blankLines != -1:
+                        rows += '    0xff, {0:#04x}, // blank lines\n'.format(blankLines)
+                        blankLines = -1
 
+            # close open color at end of line
+            if current_color:
+                vals += '{0:#04x}, '.format(self.width)
+
+            # leave out blank lines if applicable
+            if not vals.strip():
+                if blankLines == -1:
+                    blankLines = 1
+                else:
+                    blankLines += 1
+            else:
+                if blankLines != -1:
+                    rows += '    0xff, {0:#04x}, '.format(blankLines)
+                    blankLines = -1
             # add vals and unified spacing
             rows += vals
             rows += ' ' * (60 - len(vals))
@@ -75,14 +93,17 @@ class Bitmap(object):
             for x in range(self.width):
                 rows += '#' if self.pixels[y * self.width + x] else ' '
             rows += '\n'
+
+        # add finishing empty lines
+        if blankLines != -1:
+            rows += '0xff, {0:#04x},// blank lines\n '.format(blankLines)
+
         rows += '};\n'
 
         width_next8 = ((self.width + 7) & -8)
 
         array_entry = \
-        '''
-            (const uint8_t*)%s_char_%d,
-        ''' % (font_prefix, ord(self.char))
+        '    (const uint8_t*)%s_char_%d,\n' % (font_prefix, ord(self.char))
 
         return rows, array_entry
 
@@ -255,7 +276,6 @@ class Font(object):
         if None in (width, height, baseline):
             width, _, _ = self.text_dimensions(text)
 
-
         x = 0
         previous_char = None
         outbuffer = Bitmap(width, height, char=text)
@@ -277,3 +297,44 @@ class Font(object):
             previous_char = char
 
         return outbuffer
+
+
+def fontRender(fnt_size, max_height, max_width, max_descent, space_width, font_prefix, useSpace):
+    fnt = Font('C059-BdIta.ttf', fnt_size)
+
+    number_location = 0 if (useSpace == 'included') else ord('z') - ord('A') + 1
+
+    print('#include "bigfont.h"\n#include <avr/pgmspace.h>\n\n')
+
+    arr = 'const BigFont %s = {\n%d,\n%d,\n%d, \n%d, \n{' % (font_prefix, max_height, max_width, space_width, number_location)
+    count = 0
+
+    letters = []
+    if useSpace == 'included':
+        letters += range(ord('0'), ord('9') + 1)
+        num_free = ord('Z') - ord('A') - len(letters) + 1
+        letters += [0] * num_free
+    else:
+        letters += range(ord('A'), ord('Z') + 1)
+
+    letters += [ord(','), ord('.'), ord(':'), ord('ä'), ord('ö'), ord('ü')]
+    letters += range(ord('a'), ord('z') + 1)
+
+    if useSpace == 'back':
+        letters += range(ord('0'), ord('9') + 1)
+
+    for i in letters:
+        if i == 0:
+            arr += "    (const uint8_t*)0,\n"
+            continue
+        # repr(fnt.render_text(char))
+        glyph = fnt.render_text(chr(i), height=max_height, baseline=max_descent)
+        repr, array_entry = glyph.arrayize(font_prefix=font_prefix)
+        print(repr)
+        arr += array_entry
+
+        max_width = max(max_width, glyph.width)
+        count += 1
+
+    arr += '},\n};'
+    print(arr)

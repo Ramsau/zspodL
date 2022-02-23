@@ -7,6 +7,8 @@
 struct BigFont {
   const uint8_t height;
   const uint8_t max_width;
+  const uint8_t space_width;
+  const uint8_t number_location;
   const uint8_t* letters[];
 };
 

@@ -279,11 +279,227 @@ void Epd::SetPartialWindow(const unsigned char* buffer_black, int x, int y, int 
         }  
     } else {
         for(int i = 0; i < w  / 8 * l; i++) {
-            SendData(0x00);  
+            SendData(0xff);  
         }  
     }
     DelayMs(2);
     SendCommand(PARTIAL_OUT);  
+}
+
+
+
+int Epd::CharToLetterId(const char charToTransform, const BigFont* font) {
+  // handling the umlaute and sonderzeichen
+  int adjustedChar = charToTransform;
+  if (adjustedChar == -61U) {
+    return -1;
+  }
+  switch(adjustedChar) {
+    case ',':
+      adjustedChar = '[';
+      break;
+    case '.':
+      adjustedChar = '\\';
+      break;
+    case ':':
+      adjustedChar = ']';
+      break;
+    case -92U:
+      adjustedChar = '^';
+      break;
+    case -74U:
+      adjustedChar = '_';
+      break;
+    case -68U:
+      adjustedChar = '`';
+      break;
+  }
+  if (adjustedChar >= '0' && adjustedChar <= '9') {
+    adjustedChar += 'A' - '0' + font->number_location;
+  }
+  adjustedChar -= 'A';
+
+  return adjustedChar;
+}
+
+
+/**
+ *  @brief: transmit partial data to the SRAM
+ */
+int Epd::DisplayChar(const int letterId, const int lastLetterId, const BigFont* font, int colored, int x, int y) {
+    // finding letter
+    const uint8_t* letter = font->letters[letterId];
+    const uint8_t* lastLetter = lastLetterId != -1 ? font->letters[lastLetterId] : 0;
+
+    // positioning
+    int h = font->height;
+    int shiftX = (x % 8);
+    int w_raw = pgm_read_byte(letter);
+    int w = w_raw + 8 - (w_raw % 8);
+    int blankLines = 0;
+
+    // positioning - last letter
+    int lastW = lastLetter ? pgm_read_byte(lastLetter) : 0;
+    int lastShiftX = ((x-lastW) % 8);
+    int lastBlankLines = 0;
+    
+    // bitmap-char conversion
+    unsigned letterOffset = 1; // first two bytes are width and # of blank lines
+    uint8_t charOut = 0;
+    int nextFlipX = 0xff;
+    bool currentColored = !colored;
+
+    // bitmap-char conversion - last letter
+    unsigned lastLetterOffset = 1;
+    int lastNextFlipX = 0xff;
+    bool lastCurrentColored = !colored;
+    
+    SendCommand(PARTIAL_IN);
+    SendCommand(PARTIAL_WINDOW);
+    SendData(x >> 8);
+    SendData(x & 0xff8);     // x should be the multiple of 8, the last 3 bit will always be ignored
+    SendData(((x & 0xff8) + w  - 1) >> 8);
+    SendData(((x & 0xff8) + w  - 1) | 0x07);
+    SendData(y >> 8);        
+    SendData(y & 0xff);
+    SendData((y + h - 1) >> 8);        
+    SendData((y + h - 1) & 0xff);
+    SendData(0x01);         // Gates scan both inside and outside of the partial window. (default) 
+    DelayMs(2);
+    SendCommand(DATA_START_TRANSMISSION_2);
+
+
+    // read next flip, handle blank line syntax
+    int readByte = pgm_read_byte(letter + letterOffset++);
+    if (readByte == 0xff) {
+      blankLines = pgm_read_byte(letter + letterOffset++);
+      currentColored = !colored;
+      nextFlipX = pgm_read_byte(letter + letterOffset++) + shiftX;
+    } else {
+      nextFlipX = readByte + shiftX;
+    }
+
+    #define LASTLETTER_SHIFT (-lastW + shiftX)
+    if (lastLetter) {
+      readByte = pgm_read_byte(lastLetter + lastLetterOffset++);
+      if (readByte == 0xff) {
+        lastBlankLines = pgm_read_byte(lastLetter + lastLetterOffset++);
+        lastNextFlipX = pgm_read_byte(lastLetter + lastLetterOffset++) + LASTLETTER_SHIFT;
+      } else {
+        lastNextFlipX = readByte + LASTLETTER_SHIFT;
+      }
+    }
+    
+    for (int posY = 0; posY < h; posY++) {
+      currentColored = !colored;
+      lastCurrentColored = !colored;
+      charOut = 0;
+
+        // start x-scan at start of former letter
+      for (int posX = -lastW; posX < w + shiftX; posX++) {
+        uint8_t subX = posX % 8;
+
+        if (!blankLines && nextFlipX == posX) {
+          // flip color at specified point, read next
+          currentColored = !currentColored;
+          int readByte = pgm_read_byte(letter + letterOffset++);
+          if (readByte == 0xff) {
+            blankLines = pgm_read_byte(letter + letterOffset++);
+            currentColored = !colored;
+            nextFlipX = pgm_read_byte(letter + letterOffset++) + shiftX;
+          } else {
+            nextFlipX = readByte + shiftX;
+          }
+        }
+        
+        if (!lastBlankLines && lastLetter && lastNextFlipX == posX) {
+          //flip color at specified point, read next
+          lastCurrentColored = !lastCurrentColored;
+          int readByte = pgm_read_byte(lastLetter + lastLetterOffset++);
+          if (readByte == 0xff) {
+            lastBlankLines = pgm_read_byte(lastLetter + lastLetterOffset++) + 1;
+            lastCurrentColored = !colored;
+            lastNextFlipX = pgm_read_byte(lastLetter + lastLetterOffset++) + LASTLETTER_SHIFT;
+          } else {
+            lastNextFlipX = readByte + LASTLETTER_SHIFT;
+          }
+        }
+
+
+        // don't output pixels left to the frame
+        if (posX < 0) continue;
+        
+        // push current color to ongoing char
+        if (colored) {
+          charOut |= (currentColored | lastCurrentColored) << (7 - subX);
+        } else {
+          charOut |= ~(~currentColored | ~lastCurrentColored) << (7 - subX);
+        }
+
+
+        if (subX == 7) {
+          SendData(charOut); 
+          charOut = 0;
+        }
+      }
+
+      if (blankLines) {
+        blankLines--;
+      }
+
+      if (lastBlankLines) {
+        lastBlankLines--;
+      }
+    }
+   
+    DelayMs(2);
+    SendCommand(PARTIAL_OUT);  
+    return w_raw;
+}
+
+
+void Epd::DisplayText(const char* text, const BigFont* font, int colored, int x, int y) {  
+  int currentX = x;
+  int formerChar = -1;
+  for (int textIndex = 0; text[textIndex]; textIndex++) {
+    // skip space and move caret
+    if (text[textIndex] == ' ') {
+      currentX += font->space_width;
+      formerChar = -1;
+      continue;
+    }
+
+    int adjustedChar = CharToLetterId(text[textIndex], font);
+
+    // skip unknown chars
+    if (adjustedChar == -1) {
+      formerChar = -1;
+      continue;
+    }
+    
+    currentX += DisplayChar(adjustedChar, formerChar, font, colored, currentX, y);
+    formerChar = adjustedChar;
+  }
+  
+}
+
+int Epd::BigStringWidth(const char* text, const BigFont* font) {
+  size_t width = 0;
+  
+  // Iterate over the string and accumulate the char's widths
+  for (int textIndex = 0; text[textIndex]; textIndex ++) {
+    if (text[textIndex] == ' ') {
+      width += font->space_width;
+      continue;
+    }
+    int char_id = CharToLetterId(text[textIndex], font);
+
+    if (char_id == -1) continue;
+
+    width += pgm_read_byte(font->letters[char_id]);
+  }
+
+  return width;
 }
 
 void Epd::SetLut_by_host(unsigned char* lut_vcom,  unsigned char* lut_ww, unsigned char* lut_bw, unsigned char* lut_wb, unsigned char* lut_bb)
@@ -381,5 +597,3 @@ void Epd::DisplayFrame(void) {
 }
 
 /* END OF FILE */
-
-

@@ -5,7 +5,6 @@
 
 #include <SPI.h>
 #include "epd7in5_V2.h"
-#include "epdpaint.h"
 
 #include "buttons.h"
 #include "trans.h"
@@ -15,20 +14,19 @@
 #define COLORED     1
 #define UNCOLORED   0
 
-#define TOPBAR_HEIGHT 30
+#define TOPBAR_HEIGHT 60
+#define TOPBAR_PADDING_TOP 18
 #define BIGSTRING_MARGIN 5
-#define BIGSTRING_SINGLE_Y ((EPD_HEIGHT - TOPBAR_HEIGHT - FONT60_HEIGHT) / 2  + TOPBAR_HEIGHT)
-#define BIGSTRING_DOUBLE_Y_UPPER ((EPD_HEIGHT - TOPBAR_HEIGHT - (FONT60_HEIGHT * 2) - BIGSTRING_MARGIN ) / 2 + TOPBAR_HEIGHT)
-#define BIGSTRING_DOUBLE_Y_LOWER (BIGSTRING_DOUBLE_Y_UPPER + FONT60_HEIGHT + BIGSTRING_MARGIN)
+#define MAIN_FONT_HEIGHT 110
+#define BIGSTRING_SINGLE_Y ((EPD_HEIGHT - TOPBAR_HEIGHT - MAIN_FONT_HEIGHT) / 2  + TOPBAR_HEIGHT)
+#define BIGSTRING_DOUBLE_Y_UPPER ((EPD_HEIGHT - TOPBAR_HEIGHT - (MAIN_FONT_HEIGHT * 2) - BIGSTRING_MARGIN ) / 2 + TOPBAR_HEIGHT)
+#define BIGSTRING_DOUBLE_Y_LOWER (BIGSTRING_DOUBLE_Y_UPPER + MAIN_FONT_HEIGHT + BIGSTRING_MARGIN)
  
 #define SMALLSTRING_X (EPD_HEIGHT - 17 * 5) / 2
 #define SMALLSTRING_Y (EPD_WIDTH - TOPBAR_HEIGHT - 24) / 2 + TOPBAR_HEIGHT
  
 #define SERIAL_ACTIVATE
 
-
-unsigned char image[750];
-Paint paint(image, 200, 30);
 Epd epd;
 
 char text_1[20] = {0};
@@ -40,7 +38,7 @@ void setup() {
 
   // RTC and serial
   #ifdef SERIAL_ACTIVATE
-  Serial.begin(9600);
+  Serial.begin(57600);
   #endif
   rtc.begin();
   if (!rtc.isrunning()) {
@@ -97,41 +95,30 @@ void  updateDisplay() {
   Serial.println(now.toString(dt_format));
   #endif
 
-  // (400 - strlen(date)* fontwidth) / 2
-  int fromLeft = (EPD_WIDTH - strlen(date) * 17) / 2;
+  int fromLeft = (EPD_WIDTH - epd.BigStringWidth(date, &font40)) / 2;
 
   epd.Init();
   epd.ClearFrameHidden();
 
-  paint.SetHeight(TOPBAR_HEIGHT);
-  paint.SetWidth(200);
-  paint.Clear(UNCOLORED);
-  paint.DrawFilledRectangle(0,0, 200, TOPBAR_HEIGHT, COLORED);
-  paint.DrawStringAt(fromLeft, 5, date, &Font24, UNCOLORED);
-  epd.SetPartialWindow(paint.GetImage(), 0, 0, paint.GetWidth(), paint.GetHeight());
-  
-  paint.Clear(UNCOLORED);
-  paint.DrawFilledRectangle(0, 0, 200, TOPBAR_HEIGHT, COLORED);
-  paint.DrawStringAt(fromLeft - 200, 5, date, &Font24, UNCOLORED);
-  epd.SetPartialWindow(paint.GetImage(), 200, 0, paint.GetWidth(), paint.GetHeight());
+  epd.SetPartialWindow(0, 0, 0, EPD_WIDTH, TOPBAR_HEIGHT);
+  epd.DisplayText(date, &font40, UNCOLORED, fromLeft, TOPBAR_PADDING_TOP);
 
   if (!time_change_mode) {
     Trans::upperString(now, text_1);
     Trans::lowerString(now, text_2);
   
-    return;
-    int width_upper = paint.BigStringWidth(text_1, &font110);
-    int width_lower = paint.BigStringWidth(text_2, &font110);
-  
+    int width_upper = epd.BigStringWidth(text_1, &font110);
+    int width_lower = epd.BigStringWidth(text_2, &font110);
+
     int from_left_upper = (EPD_WIDTH - width_upper) / 2;
     int from_left_lower = (EPD_WIDTH - width_lower) / 2;
-    paint.DrawBigStringAt(from_left_upper, BIGSTRING_DOUBLE_Y_UPPER, text_1, &font110, COLORED, epd);
-    paint.DrawBigStringAt(from_left_lower, width_upper ? BIGSTRING_DOUBLE_Y_LOWER : BIGSTRING_SINGLE_Y, text_2, &font110, COLORED, epd);
+    
+    epd.DisplayText(text_1, &font110, COLORED, from_left_upper, BIGSTRING_DOUBLE_Y_UPPER);
+    epd.DisplayText(text_2, &font110, COLORED, from_left_lower, width_upper ? BIGSTRING_DOUBLE_Y_LOWER : BIGSTRING_SINGLE_Y);
   }
   else {
-    paint.Clear(UNCOLORED);
-    paint.DrawStringAt(0, 0, timecode, &Font24, COLORED);
-    epd.SetPartialWindow(paint.GetImage(), SMALLSTRING_X, SMALLSTRING_Y, paint.GetWidth(), paint.GetHeight());
+    int from_left = (EPD_WIDTH - epd.BigStringWidth(timecode, &font110)) / 2;
+    epd.DisplayText(timecode, &font110, COLORED, from_left, BIGSTRING_SINGLE_Y);
   }
 
   epd.DisplayFrame();

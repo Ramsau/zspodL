@@ -23,7 +23,7 @@ namespace Trans {
     "siebne",
     "ochte",
     "neine",
-    "zehnne",
+    "zehne",
     "öfe",
   };
   const char* minutes[5] = {

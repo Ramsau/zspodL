@@ -333,24 +333,31 @@ int Epd::DisplayChar(const int letterId, const int lastLetterId, const BigFont* 
 
     // positioning
     int h = font->height;
+    int w_raw = GLYPH_WIDTH(letter);
+    int bearing = GLYPH_BEARING(letter);
+    int advanceW = GLYPH_ADVANCE(letter);
+
+    x += bearing;
     int shiftX = (x % 8);
-    int w_raw = pgm_read_byte(letter);
-    int w = w_raw + 8 - (w_raw % 8);
+    int drawWidth = w_raw + shiftX;
+    int w = drawWidth + 8 - (drawWidth % 8);
     int blankLines = 0;
 
     // positioning - last letter
-    int lastW = lastLetter ? pgm_read_byte(lastLetter) : 0;
-    int lastShiftX = ((x-lastW) % 8);
+    int lastW = lastLetter ? GLYPH_WIDTH(lastLetter) : 0;
+    int lastBearing = GLYPH_BEARING(lastLetter);
+    int lastAdvanceW = GLYPH_ADVANCE(lastLetter);
+    int lastShiftX = ((x - lastW + lastBearing) % 8);
     int lastBlankLines = 0;
     
     // bitmap-char conversion
-    unsigned letterOffset = 1; // first two bytes are width and # of blank lines
+    unsigned letterOffset = 3; // first three bytes are width, bearing and advance width
     uint8_t charOut = 0;
     int nextFlipX = 0xff;
     bool currentColored = !colored;
 
     // bitmap-char conversion - last letter
-    unsigned lastLetterOffset = 1;
+    unsigned lastLetterOffset = 3;
     int lastNextFlipX = 0xff;
     bool lastCurrentColored = !colored;
     
@@ -379,7 +386,7 @@ int Epd::DisplayChar(const int letterId, const int lastLetterId, const BigFont* 
       nextFlipX = readByte + shiftX;
     }
 
-    #define LASTLETTER_SHIFT (-lastW + shiftX)
+    #define LASTLETTER_SHIFT (-lastAdvanceW - bearing + lastBearing + shiftX)
     if (lastLetter) {
       readByte = pgm_read_byte(lastLetter + lastLetterOffset++);
       if (readByte == 0xff) {
@@ -454,7 +461,7 @@ int Epd::DisplayChar(const int letterId, const int lastLetterId, const BigFont* 
    
     DelayMs(2);
     SendCommand(PARTIAL_OUT);  
-    return w_raw;
+    return advanceW;
 }
 
 
@@ -473,7 +480,6 @@ void Epd::DisplayText(const char* text, const BigFont* font, int colored, int x,
 
     // skip unknown chars
     if (adjustedChar == -1) {
-      formerChar = -1;
       continue;
     }
     
@@ -486,6 +492,7 @@ void Epd::DisplayText(const char* text, const BigFont* font, int colored, int x,
 int Epd::BigStringWidth(const char* text, const BigFont* font) {
   size_t width = 0;
   
+
   // Iterate over the string and accumulate the char's widths
   for (int textIndex = 0; text[textIndex]; textIndex ++) {
     if (text[textIndex] == ' ') {
@@ -496,7 +503,18 @@ int Epd::BigStringWidth(const char* text, const BigFont* font) {
 
     if (char_id == -1) continue;
 
-    width += pgm_read_byte(font->letters[char_id]);
+    // subtract first char's bearing
+    if (textIndex == 0) {
+      width -= GLYPH_BEARING(font->letters[char_id]);
+    }
+
+    // add advance width, except for last char add width + bearing
+    if (text[textIndex + 1]) {
+      width +=GLYPH_ADVANCE(font->letters[char_id]);
+    } else {
+      width += GLYPH_WIDTH(font->letters[char_id]);
+      width += GLYPH_BEARING(font->letters[char_id]);
+    }
   }
 
   return width;

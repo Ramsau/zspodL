@@ -4,6 +4,8 @@
 
 const uint8_t font40_char_65[] PROGMEM = { // 'A'
     0x20, // width
+    0xfc, // bearing
+    0x1e, // advance width
     0x13, 0x16,                                             //                    ###          
     0x13, 0x17,                                             //                    ####         
     0x12, 0x17,                                             //                   #####         
@@ -42,11 +44,13 @@ const uint8_t font40_char_65[] PROGMEM = { // 'A'
                                                             //                                 
                                                             //                                 
                                                             //                                 
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_66[] PROGMEM = { // 'B'
     0x1f, // width
+    0xfd, // bearing
+    0x1e, // advance width
                                                             //                                
     0xff, 0x01, // blank lines
     0x06, 0x19,                                             //       ###################      
@@ -86,11 +90,13 @@ const uint8_t font40_char_66[] PROGMEM = { // 'B'
                                                             //                                
                                                             //                                
                                                             //                                
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_67[] PROGMEM = { // 'C'
     0x1e, // width
+    0x01, // bearing
+    0x1e, // advance width
     0x0e, 0x15,                                             //               #######         
     0x0b, 0x17, 0x1b, 0x1d,                                 //            ############    ## 
     0x09, 0x10, 0x15, 0x18, 0x1a, 0x1d,                     //          #######     ###  ### 
@@ -129,11 +135,13 @@ const uint8_t font40_char_67[] PROGMEM = { // 'C'
                                                             //                               
                                                             //                               
                                                             //                               
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_68[] PROGMEM = { // 'D'
     0x22, // width
+    0xfd, // bearing
+    0x21, // advance width
                                                             //                                   
     0xff, 0x01, // blank lines
     0x06, 0x1a,                                             //       ####################        
@@ -173,11 +181,13 @@ const uint8_t font40_char_68[] PROGMEM = { // 'D'
                                                             //                                   
                                                             //                                   
                                                             //                                   
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_69[] PROGMEM = { // 'E'
     0x1f, // width
+    0xfd, // bearing
+    0x1e, // advance width
                                                             //                                
     0xff, 0x01, // blank lines
     0x06, 0x1f,                                             //       #########################
@@ -217,11 +227,13 @@ const uint8_t font40_char_69[] PROGMEM = { // 'E'
                                                             //                                
                                                             //                                
                                                             //                                
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_70[] PROGMEM = { // 'F'
     0x1f, // width
+    0xfd, // bearing
+    0x1c, // advance width
                                                             //                                
     0xff, 0x01, // blank lines
     0x06, 0x1f,                                             //       #########################
@@ -261,11 +273,13 @@ const uint8_t font40_char_70[] PROGMEM = { // 'F'
                                                             //                                
                                                             //                                
                                                             //                                
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_71[] PROGMEM = { // 'G'
     0x21, // width
+    0x01, // bearing
+    0x21, // advance width
     0x0e, 0x16,                                             //               ########           
     0x0b, 0x18, 0x1c, 0x1e,                                 //            #############    ##   
     0x09, 0x11, 0x15, 0x19, 0x1b, 0x1e,                     //          ########    ####  ###   
@@ -304,11 +318,13 @@ const uint8_t font40_char_71[] PROGMEM = { // 'G'
                                                             //                                  
                                                             //                                  
                                                             //                                  
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_72[] PROGMEM = { // 'H'
     0x26, // width
+    0xfd, // bearing
+    0x23, // advance width
                                                             //                                       
     0xff, 0x01, // blank lines
     0x06, 0x15, 0x18, 0x26,                                 //       ###############   ##############
@@ -348,11 +364,13 @@ const uint8_t font40_char_72[] PROGMEM = { // 'H'
                                                             //                                       
                                                             //                                       
                                                             //                                       
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_73[] PROGMEM = { // 'I'
     0x15, // width
+    0xfd, // bearing
+    0x12, // advance width
                                                             //                      
     0xff, 0x01, // blank lines
     0x06, 0x15,                                             //       ###############
@@ -392,11 +410,13 @@ const uint8_t font40_char_73[] PROGMEM = { // 'I'
                                                             //                      
                                                             //                      
                                                             //                      
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_74[] PROGMEM = { // 'J'
     0x1d, // width
+    0xfe, // bearing
+    0x1b, // advance width
                                                             //                              
     0xff, 0x01, // blank lines
     0x0e, 0x1d,                                             //               ###############
@@ -436,11 +456,13 @@ const uint8_t font40_char_74[] PROGMEM = { // 'J'
                                                             //                              
                                                             //                              
                                                             //                              
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_75[] PROGMEM = { // 'K'
     0x23, // width
+    0xfd, // bearing
+    0x1f, // advance width
                                                             //                                    
     0xff, 0x01, // blank lines
     0x06, 0x15, 0x17, 0x23,                                 //       ###############  ############
@@ -480,11 +502,13 @@ const uint8_t font40_char_75[] PROGMEM = { // 'K'
                                                             //                                    
                                                             //                                    
                                                             //                                    
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_76[] PROGMEM = { // 'L'
     0x1d, // width
+    0xfd, // bearing
+    0x1c, // advance width
                                                             //                              
     0xff, 0x01, // blank lines
     0x06, 0x16,                                             //       ################       
@@ -524,11 +548,13 @@ const uint8_t font40_char_76[] PROGMEM = { // 'L'
                                                             //                              
                                                             //                              
                                                             //                              
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_77[] PROGMEM = { // 'M'
     0x29, // width
+    0xfe, // bearing
+    0x26, // advance width
                                                             //                                          
     0xff, 0x01, // blank lines
     0x05, 0x11, 0x1d, 0x28,                                 //      ############            ########### 
@@ -568,11 +594,13 @@ const uint8_t font40_char_77[] PROGMEM = { // 'M'
                                                             //                                          
                                                             //                                          
                                                             //                                          
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_78[] PROGMEM = { // 'N'
     0x26, // width
+    0xfc, // bearing
+    0x22, // advance width
                                                             //                                       
     0xff, 0x01, // blank lines
     0x06, 0x10, 0x1b, 0x26,                                 //       ##########           ###########
@@ -612,11 +640,13 @@ const uint8_t font40_char_78[] PROGMEM = { // 'N'
                                                             //                                       
                                                             //                                       
                                                             //                                       
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_79[] PROGMEM = { // 'O'
     0x21, // width
+    0x01, // bearing
+    0x21, // advance width
     0x0e, 0x16,                                             //               ########           
     0x0b, 0x19,                                             //            ##############        
     0x09, 0x11, 0x14, 0x1a,                                 //          ########   ######       
@@ -655,11 +685,13 @@ const uint8_t font40_char_79[] PROGMEM = { // 'O'
                                                             //                                  
                                                             //                                  
                                                             //                                  
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_80[] PROGMEM = { // 'P'
     0x1f, // width
+    0xfd, // bearing
+    0x1e, // advance width
                                                             //                                
     0xff, 0x01, // blank lines
     0x07, 0x19,                                             //        ##################      
@@ -699,11 +731,13 @@ const uint8_t font40_char_80[] PROGMEM = { // 'P'
                                                             //                                
                                                             //                                
                                                             //                                
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_81[] PROGMEM = { // 'Q'
     0x21, // width
+    0x01, // bearing
+    0x21, // advance width
     0x0e, 0x16,                                             //               ########           
     0x0b, 0x19,                                             //            ##############        
     0x09, 0x10, 0x14, 0x1a,                                 //          #######    ######       
@@ -742,10 +776,13 @@ const uint8_t font40_char_81[] PROGMEM = { // 'Q'
     0x0f, 0x1a,                                             //                ###########       
     0x10, 0x19,                                             //                 #########        
     0x12, 0x17,                                             //                   #####          
-};
+0xff, 0xff,// blank lines
+ };
 
 const uint8_t font40_char_82[] PROGMEM = { // 'R'
     0x20, // width
+    0xfd, // bearing
+    0x20, // advance width
                                                             //                                 
     0xff, 0x01, // blank lines
     0x06, 0x1a,                                             //       ####################      
@@ -785,11 +822,13 @@ const uint8_t font40_char_82[] PROGMEM = { // 'R'
                                                             //                                 
                                                             //                                 
                                                             //                                 
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_83[] PROGMEM = { // 'S'
     0x1b, // width
+    0xff, // bearing
+    0x1b, // advance width
     0x0b, 0x12,                                             //            #######         
     0x09, 0x15, 0x18, 0x1b,                                 //          ############   ###
     0x07, 0x0d, 0x11, 0x16, 0x17, 0x1a,                     //        ######    ##### ### 
@@ -828,11 +867,13 @@ const uint8_t font40_char_83[] PROGMEM = { // 'S'
                                                             //                            
                                                             //                            
                                                             //                            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_84[] PROGMEM = { // 'T'
     0x1d, // width
+    0x01, // bearing
+    0x1d, // advance width
                                                             //                              
     0xff, 0x01, // blank lines
     0x02, 0x1c,                                             //   ########################## 
@@ -872,11 +913,13 @@ const uint8_t font40_char_84[] PROGMEM = { // 'T'
                                                             //                              
                                                             //                              
                                                             //                              
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_85[] PROGMEM = { // 'U'
     0x21, // width
+    0x03, // bearing
+    0x21, // advance width
                                                             //                                  
     0xff, 0x01, // blank lines
     0x00, 0x0f, 0x15, 0x20,                                 // ###############      ########### 
@@ -916,11 +959,13 @@ const uint8_t font40_char_85[] PROGMEM = { // 'U'
                                                             //                                  
                                                             //                                  
                                                             //                                  
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_86[] PROGMEM = { // 'V'
     0x1f, // width
+    0x01, // bearing
+    0x1e, // advance width
                                                             //                                
     0xff, 0x01, // blank lines
     0x00, 0x0f, 0x14, 0x1f,                                 // ###############     ###########
@@ -960,11 +1005,13 @@ const uint8_t font40_char_86[] PROGMEM = { // 'V'
                                                             //                                
                                                             //                                
                                                             //                                
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_87[] PROGMEM = { // 'W'
     0x26, // width
+    0x01, // bearing
+    0x26, // advance width
                                                             //                                       
     0xff, 0x01, // blank lines
     0x00, 0x0c, 0x0e, 0x1a, 0x1c, 0x26,                     // ############  ############  ##########
@@ -1004,11 +1051,13 @@ const uint8_t font40_char_87[] PROGMEM = { // 'W'
                                                             //                                       
                                                             //                                       
                                                             //                                       
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_88[] PROGMEM = { // 'X'
     0x23, // width
+    0xfc, // bearing
+    0x1e, // advance width
                                                             //                                    
     0xff, 0x01, // blank lines
     0x06, 0x15, 0x17, 0x23,                                 //       ###############  ############
@@ -1048,11 +1097,13 @@ const uint8_t font40_char_88[] PROGMEM = { // 'X'
                                                             //                                    
                                                             //                                    
                                                             //                                    
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_89[] PROGMEM = { // 'Y'
     0x1e, // width
+    0xff, // bearing
+    0x1c, // advance width
                                                             //                               
     0xff, 0x01, // blank lines
     0x00, 0x0e, 0x12, 0x1e,                                 // ##############    ############
@@ -1092,11 +1143,13 @@ const uint8_t font40_char_89[] PROGMEM = { // 'Y'
                                                             //                               
                                                             //                               
                                                             //                               
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_90[] PROGMEM = { // 'Z'
     0x1e, // width
+    0xfd, // bearing
+    0x1c, // advance width
                                                             //                               
     0xff, 0x01, // blank lines
     0x06, 0x1e,                                             //       ########################
@@ -1136,11 +1189,13 @@ const uint8_t font40_char_90[] PROGMEM = { // 'Z'
                                                             //                               
                                                             //                               
                                                             //                               
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_44[] PROGMEM = { // ','
     0x0b, // width
+    0xfd, // bearing
+    0x0b, // advance width
                                                             //            
                                                             //            
                                                             //            
@@ -1180,10 +1235,13 @@ const uint8_t font40_char_44[] PROGMEM = { // ','
     0x02, 0x06,                                             //   ####     
     0x00, 0x04,                                             // ####       
     0x01, 0x02,                                             //  #         
-};
+0xff, 0xff,// blank lines
+ };
 
 const uint8_t font40_char_46[] PROGMEM = { // '.'
     0x0b, // width
+    0xff, // bearing
+    0x0b, // advance width
                                                             //            
                                                             //            
                                                             //            
@@ -1223,11 +1281,13 @@ const uint8_t font40_char_46[] PROGMEM = { // '.'
                                                             //            
                                                             //            
                                                             //            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_58[] PROGMEM = { // ':'
     0x0b, // width
+    0xfe, // bearing
+    0x0b, // advance width
                                                             //            
                                                             //            
                                                             //            
@@ -1268,11 +1328,13 @@ const uint8_t font40_char_58[] PROGMEM = { // ':'
                                                             //            
                                                             //            
                                                             //            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
-const uint8_t font40_char_228[] PROGMEM = { // 'ä'
+const uint8_t font40_char_228[] PROGMEM = { // '�'
     0x1b, // width
+    0xff, // bearing
+    0x1b, // advance width
                                                             //                            
                                                             //                            
     0xff, 0x02, // blank lines
@@ -1313,11 +1375,13 @@ const uint8_t font40_char_228[] PROGMEM = { // 'ä'
                                                             //                            
                                                             //                            
                                                             //                            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
-const uint8_t font40_char_246[] PROGMEM = { // 'ö'
+const uint8_t font40_char_246[] PROGMEM = { // '�'
     0x17, // width
+    0xff, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -1358,11 +1422,13 @@ const uint8_t font40_char_246[] PROGMEM = { // 'ö'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
-const uint8_t font40_char_252[] PROGMEM = { // 'ü'
+const uint8_t font40_char_252[] PROGMEM = { // '�'
     0x1b, // width
+    0x01, // bearing
+    0x1b, // advance width
                                                             //                            
                                                             //                            
     0xff, 0x02, // blank lines
@@ -1403,11 +1469,13 @@ const uint8_t font40_char_252[] PROGMEM = { // 'ü'
                                                             //                            
                                                             //                            
                                                             //                            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_97[] PROGMEM = { // 'a'
     0x1b, // width
+    0xff, // bearing
+    0x1b, // advance width
                                                             //                            
                                                             //                            
                                                             //                            
@@ -1447,11 +1515,13 @@ const uint8_t font40_char_97[] PROGMEM = { // 'a'
                                                             //                            
                                                             //                            
                                                             //                            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_98[] PROGMEM = { // 'b'
     0x18, // width
+    0x01, // bearing
+    0x18, // advance width
     0x04, 0x0d,                                             //     #########           
     0x02, 0x0d,                                             //   ###########           
     0x04, 0x0c,                                             //     ########            
@@ -1490,11 +1560,13 @@ const uint8_t font40_char_98[] PROGMEM = { // 'b'
                                                             //                         
                                                             //                         
                                                             //                         
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_99[] PROGMEM = { // 'c'
     0x15, // width
+    0xff, // bearing
+    0x15, // advance width
                                                             //                      
                                                             //                      
                                                             //                      
@@ -1534,11 +1606,13 @@ const uint8_t font40_char_99[] PROGMEM = { // 'c'
                                                             //                      
                                                             //                      
                                                             //                      
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_100[] PROGMEM = { // 'd'
     0x1b, // width
+    0xff, // bearing
+    0x1b, // advance width
     0x11, 0x1a,                                             //                  ######### 
     0x0f, 0x1a,                                             //                ########### 
     0x11, 0x1a,                                             //                  ######### 
@@ -1577,11 +1651,13 @@ const uint8_t font40_char_100[] PROGMEM = { // 'd'
                                                             //                            
                                                             //                            
                                                             //                            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_101[] PROGMEM = { // 'e'
     0x15, // width
+    0xfe, // bearing
+    0x15, // advance width
                                                             //                      
                                                             //                      
                                                             //                      
@@ -1621,11 +1697,13 @@ const uint8_t font40_char_101[] PROGMEM = { // 'e'
                                                             //                      
                                                             //                      
                                                             //                      
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_102[] PROGMEM = { // 'f'
     0x18, // width
+    0xfd, // bearing
+    0x10, // advance width
     0x0f, 0x15,                                             //                ######   
     0x0d, 0x17,                                             //              ########## 
     0x0c, 0x11, 0x13, 0x17,                                 //             #####  #### 
@@ -1664,10 +1742,13 @@ const uint8_t font40_char_102[] PROGMEM = { // 'f'
     0x01, 0x08,                                             //  #######                
     0x01, 0x07,                                             //  ######                 
     0x00, 0x02,                                             // ##                      
-};
+0xff, 0xff,// blank lines
+ };
 
 const uint8_t font40_char_103[] PROGMEM = { // 'g'
     0x1b, // width
+    0xfc, // bearing
+    0x18, // advance width
                                                             //                            
                                                             //                            
                                                             //                            
@@ -1707,10 +1788,13 @@ const uint8_t font40_char_103[] PROGMEM = { // 'g'
     0x01, 0x07, 0x0e, 0x13,                                 //  ######       #####        
     0x02, 0x12,                                             //   ################         
     0x05, 0x0f,                                             //      ##########            
-};
+0xff, 0xff,// blank lines
+ };
 
 const uint8_t font40_char_104[] PROGMEM = { // 'h'
     0x1b, // width
+    0xff, // bearing
+    0x1b, // advance width
     0x05, 0x0f,                                             //      ##########            
     0x04, 0x0f,                                             //     ###########            
     0x06, 0x0e,                                             //       ########             
@@ -1749,11 +1833,13 @@ const uint8_t font40_char_104[] PROGMEM = { // 'h'
                                                             //                            
                                                             //                            
                                                             //                            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_105[] PROGMEM = { // 'i'
     0x10, // width
+    0x01, // bearing
+    0x10, // advance width
     0x07, 0x0b,                                             //        ####     
     0x06, 0x0c,                                             //       ######    
     0x06, 0x0c,                                             //       ######    
@@ -1793,11 +1879,13 @@ const uint8_t font40_char_105[] PROGMEM = { // 'i'
                                                             //                 
                                                             //                 
                                                             //                 
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_106[] PROGMEM = { // 'j'
     0x16, // width
+    0xf8, // bearing
+    0x0f, // advance width
     0x11, 0x15,                                             //                  #### 
     0x10, 0x16,                                             //                 ######
     0x10, 0x16,                                             //                 ######
@@ -1837,10 +1925,13 @@ const uint8_t font40_char_106[] PROGMEM = { // 'j'
     0x01, 0x05, 0x07, 0x0c,                                 //  ####  #####          
     0x01, 0x0b,                                             //  ##########           
     0x03, 0x09,                                             //    ######             
-};
+0xff, 0xff,// blank lines
+ };
 
 const uint8_t font40_char_107[] PROGMEM = { // 'k'
     0x1a, // width
+    0xfe, // bearing
+    0x1a, // advance width
     0x05, 0x0f,                                             //      ##########           
     0x04, 0x0e,                                             //     ##########            
     0x06, 0x0e,                                             //       ########            
@@ -1879,11 +1970,13 @@ const uint8_t font40_char_107[] PROGMEM = { // 'k'
                                                             //                           
                                                             //                           
                                                             //                           
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_108[] PROGMEM = { // 'l'
     0x10, // width
+    0x01, // bearing
+    0x10, // advance width
     0x04, 0x0e,                                             //     ##########  
     0x03, 0x0d,                                             //    ##########   
     0x04, 0x0d,                                             //     #########   
@@ -1922,11 +2015,13 @@ const uint8_t font40_char_108[] PROGMEM = { // 'l'
                                                             //                 
                                                             //                 
                                                             //                 
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_109[] PROGMEM = { // 'm'
     0x26, // width
+    0xff, // bearing
+    0x26, // advance width
                                                             //                                       
                                                             //                                       
                                                             //                                       
@@ -1966,11 +2061,13 @@ const uint8_t font40_char_109[] PROGMEM = { // 'm'
                                                             //                                       
                                                             //                                       
                                                             //                                       
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_110[] PROGMEM = { // 'n'
     0x1b, // width
+    0xff, // bearing
+    0x1b, // advance width
                                                             //                            
                                                             //                            
                                                             //                            
@@ -2010,11 +2107,13 @@ const uint8_t font40_char_110[] PROGMEM = { // 'n'
                                                             //                            
                                                             //                            
                                                             //                            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_111[] PROGMEM = { // 'o'
     0x17, // width
+    0xff, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
                                                             //                        
@@ -2054,11 +2153,13 @@ const uint8_t font40_char_111[] PROGMEM = { // 'o'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_112[] PROGMEM = { // 'p'
     0x1d, // width
+    0xfa, // bearing
+    0x1a, // advance width
                                                             //                              
                                                             //                              
                                                             //                              
@@ -2098,10 +2199,13 @@ const uint8_t font40_char_112[] PROGMEM = { // 'p'
     0x04, 0x0a,                                             //     ######                   
     0x02, 0x0b,                                             //   #########                  
     0x00, 0x0d,                                             // #############                
-};
+0xff, 0xff,// blank lines
+ };
 
 const uint8_t font40_char_113[] PROGMEM = { // 'q'
     0x19, // width
+    0xff, // bearing
+    0x19, // advance width
                                                             //                          
                                                             //                          
                                                             //                          
@@ -2141,10 +2245,13 @@ const uint8_t font40_char_113[] PROGMEM = { // 'q'
     0x0a, 0x10,                                             //           ######         
     0x08, 0x12,                                             //         ##########       
     0x07, 0x13,                                             //        ############      
-};
+0xff, 0xff,// blank lines
+ };
 
 const uint8_t font40_char_114[] PROGMEM = { // 'r'
     0x15, // width
+    0xff, // bearing
+    0x15, // advance width
                                                             //                      
                                                             //                      
                                                             //                      
@@ -2184,11 +2291,13 @@ const uint8_t font40_char_114[] PROGMEM = { // 'r'
                                                             //                      
                                                             //                      
                                                             //                      
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_115[] PROGMEM = { // 's'
     0x13, // width
+    0xff, // bearing
+    0x13, // advance width
                                                             //                    
                                                             //                    
                                                             //                    
@@ -2228,11 +2337,13 @@ const uint8_t font40_char_115[] PROGMEM = { // 's'
                                                             //                    
                                                             //                    
                                                             //                    
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_116[] PROGMEM = { // 't'
     0x10, // width
+    0xff, // bearing
+    0x10, // advance width
                                                             //                 
                                                             //                 
                                                             //                 
@@ -2272,11 +2383,13 @@ const uint8_t font40_char_116[] PROGMEM = { // 't'
                                                             //                 
                                                             //                 
                                                             //                 
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_117[] PROGMEM = { // 'u'
     0x1b, // width
+    0x01, // bearing
+    0x1b, // advance width
                                                             //                            
                                                             //                            
                                                             //                            
@@ -2316,11 +2429,13 @@ const uint8_t font40_char_117[] PROGMEM = { // 'u'
                                                             //                            
                                                             //                            
                                                             //                            
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_118[] PROGMEM = { // 'v'
     0x16, // width
+    0x01, // bearing
+    0x16, // advance width
                                                             //                       
                                                             //                       
                                                             //                       
@@ -2360,11 +2475,13 @@ const uint8_t font40_char_118[] PROGMEM = { // 'v'
                                                             //                       
                                                             //                       
                                                             //                       
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_119[] PROGMEM = { // 'w'
     0x21, // width
+    0xff, // bearing
+    0x21, // advance width
                                                             //                                  
                                                             //                                  
                                                             //                                  
@@ -2404,11 +2521,13 @@ const uint8_t font40_char_119[] PROGMEM = { // 'w'
                                                             //                                  
                                                             //                                  
                                                             //                                  
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_120[] PROGMEM = { // 'x'
     0x19, // width
+    0xfd, // bearing
+    0x17, // advance width
                                                             //                          
                                                             //                          
                                                             //                          
@@ -2448,11 +2567,13 @@ const uint8_t font40_char_120[] PROGMEM = { // 'x'
                                                             //                          
                                                             //                          
                                                             //                          
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_121[] PROGMEM = { // 'y'
     0x17, // width
+    0xfc, // bearing
+    0x15, // advance width
                                                             //                        
                                                             //                        
                                                             //                        
@@ -2492,10 +2613,13 @@ const uint8_t font40_char_121[] PROGMEM = { // 'y'
     0x01, 0x06, 0x07, 0x0a,                                 //  ##### ###             
     0x01, 0x09,                                             //  ########              
     0x02, 0x07,                                             //   #####                
-};
+0xff, 0xff,// blank lines
+ };
 
 const uint8_t font40_char_122[] PROGMEM = { // 'z'
     0x15, // width
+    0xfe, // bearing
+    0x15, // advance width
                                                             //                      
                                                             //                      
                                                             //                      
@@ -2535,11 +2659,13 @@ const uint8_t font40_char_122[] PROGMEM = { // 'z'
                                                             //                      
                                                             //                      
                                                             //                      
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_48[] PROGMEM = { // '0'
     0x17, // width
+    0xff, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -2579,11 +2705,13 @@ const uint8_t font40_char_48[] PROGMEM = { // '0'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_49[] PROGMEM = { // '1'
     0x17, // width
+    0xff, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -2623,11 +2751,13 @@ const uint8_t font40_char_49[] PROGMEM = { // '1'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_50[] PROGMEM = { // '2'
     0x18, // width
+    0xfd, // bearing
+    0x17, // advance width
                                                             //                         
                                                             //                         
     0xff, 0x02, // blank lines
@@ -2667,11 +2797,13 @@ const uint8_t font40_char_50[] PROGMEM = { // '2'
                                                             //                         
                                                             //                         
                                                             //                         
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_51[] PROGMEM = { // '3'
     0x17, // width
+    0xfe, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -2711,11 +2843,13 @@ const uint8_t font40_char_51[] PROGMEM = { // '3'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_52[] PROGMEM = { // '4'
     0x17, // width
+    0xfe, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -2755,11 +2889,13 @@ const uint8_t font40_char_52[] PROGMEM = { // '4'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x08,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_53[] PROGMEM = { // '5'
     0x17, // width
+    0xff, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -2799,11 +2935,13 @@ const uint8_t font40_char_53[] PROGMEM = { // '5'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_54[] PROGMEM = { // '6'
     0x17, // width
+    0x01, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -2843,11 +2981,13 @@ const uint8_t font40_char_54[] PROGMEM = { // '6'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_55[] PROGMEM = { // '7'
     0x17, // width
+    0x02, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -2887,11 +3027,13 @@ const uint8_t font40_char_55[] PROGMEM = { // '7'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_56[] PROGMEM = { // '8'
     0x17, // width
+    0xff, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -2931,11 +3073,13 @@ const uint8_t font40_char_56[] PROGMEM = { // '8'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const uint8_t font40_char_57[] PROGMEM = { // '9'
     0x17, // width
+    0xff, // bearing
+    0x17, // advance width
                                                             //                        
                                                             //                        
     0xff, 0x02, // blank lines
@@ -2975,7 +3119,7 @@ const uint8_t font40_char_57[] PROGMEM = { // '9'
                                                             //                        
                                                             //                        
                                                             //                        
-0xff, 0x07,// blank lines
+0xff, 0xff,// blank lines
  };
 
 const BigFont font40 = {

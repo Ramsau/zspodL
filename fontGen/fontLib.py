@@ -37,8 +37,10 @@ class Bitmap(object):
     and any other value indicates that it is `on`.
     """
 
-    def __init__(self, width, height, pixels=None, char=' '):
+    def __init__(self, width, height, bearing=None, advance_width=None, pixels=None, char=' '):
         self.width = width
+        self.advance_width = advance_width if advance_width else self.width
+        self.bearing = bearing if bearing else 0
         self.height = height
         self.pixels = pixels or bytearray(width * height)
         self.char = char
@@ -52,6 +54,8 @@ class Bitmap(object):
 
         rows = "const uint8_t %s_char_%d[] PROGMEM = { // '%c'\n" % (font_prefix, ord(self.char), char_repr)
         rows += '    {0:#04x}, // width\n'.format(self.width)
+        rows += '    {0:#04x}, // bearing\n'.format(self.bearing if self.bearing > 0 else 0xff + self.bearing)
+        rows += '    {0:#04x}, // advance width\n'.format(self.advance_width)
         blankLines = -1
 
         for y in range(self.height):
@@ -95,8 +99,7 @@ class Bitmap(object):
             rows += '\n'
 
         # add finishing empty lines
-        if blankLines != -1:
-            rows += '0xff, {0:#04x},// blank lines\n '.format(blankLines)
+        rows += '0xff, 0xff,// blank lines\n '
 
         rows += '};\n'
 
@@ -129,8 +132,12 @@ class Bitmap(object):
 
 
 class Glyph(object):
-    def __init__(self, pixels, width, height, top, advance_width):
-        self.bitmap = Bitmap(width, height, pixels)
+    def __init__(self, pixels, width, height, top, bearing, advance_width):
+        # The advance width determines where to place the next character horizontally,
+        # that is, how many pixels we move to the right to draw the next glyph.
+        self.advance_width = advance_width
+
+        self.bitmap = Bitmap(width, height, bearing, advance_width, pixels)
 
         # The glyph bitmap's top-side bearing, i.e. the vertical distance from the
         # baseline to the bitmap's top-most scanline.
@@ -141,9 +148,6 @@ class Glyph(object):
         self.descent = max(0, self.height - self.top)
         self.ascent = max(0, max(self.top, self.height) - self.descent)
 
-        # The advance width determines where to place the next character horizontally,
-        # that is, how many pixels we move to the right to draw the next glyph.
-        self.advance_width = advance_width
 
     @property
     def width(self):
@@ -163,8 +167,9 @@ class Glyph(object):
         # The advance width is given in FreeType's 26.6 fixed point format,
         # which means that the pixel values are multiples of 64.
         advance_width = slot.advance.x // 64
+        bearing = slot.metrics.horiBearingX // 64
 
-        return Glyph(pixels, width, height, top, advance_width)
+        return Glyph(pixels, width, height, top, bearing, advance_width)
 
     @staticmethod
     def unpack_mono_bitmap(bitmap):
@@ -207,6 +212,8 @@ class Glyph(object):
         return data
 
 
+
+
 class Font(object):
 
     def __init__(self, filename, size):
@@ -245,6 +252,8 @@ class Font(object):
         width = 0
         max_ascent = 0
         max_descent = 0
+        bearing = 0
+        advance_width = 0
         previous_char = None
 
         # For each character in the text string we get the glyph
@@ -260,11 +269,14 @@ class Font(object):
             # fit into the returned dimensions.
             width += max(glyph.advance_width + kerning_x, glyph.width + kerning_x)
 
+            advance_width += glyph.advance_width
+            bearing = glyph.bitmap.bearing
+
             previous_char = char
 
         height = max_ascent + max_descent
 
-        return (width, height, max_descent)
+        return (width, height, max_descent, bearing, advance_width)
 
     def render_text(self, text, width=None, height=None, baseline=None):
         """
@@ -274,11 +286,11 @@ class Font(object):
         the `text_dimensions' method.
         """
         if None in (width, height, baseline):
-            width, _, _ = self.text_dimensions(text)
+            width, _, _, bearing, advance_width = self.text_dimensions(text)
 
         x = 0
         previous_char = None
-        outbuffer = Bitmap(width, height, char=text)
+        outbuffer = Bitmap(width, height, bearing=bearing, advance_width=advance_width, char=text)
 
         for char in text:
             glyph = self.glyph_for_character(char)

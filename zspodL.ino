@@ -25,7 +25,7 @@
 #define SMALLSTRING_X (EPD_HEIGHT - 17 * 5) / 2
 #define SMALLSTRING_Y (EPD_WIDTH - TOPBAR_HEIGHT - 24) / 2 + TOPBAR_HEIGHT
  
-#define SERIAL_ACTIVATE
+#define SERIAL_DEACTIVATE
 
 Epd epd;
 
@@ -106,6 +106,9 @@ void  updateDisplay() {
   if (!time_change_mode) {
     Trans::upperString(now, text_1);
     Trans::lowerString(now, text_2);
+
+    //strcpy(text_1, "ffäfifüöäi");
+    //strcpy(text_2, "20.32");
   
     int width_upper = epd.BigStringWidth(text_1, &font110);
     int width_lower = epd.BigStringWidth(text_2, &font110);
